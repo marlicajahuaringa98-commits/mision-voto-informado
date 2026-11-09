@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Misión: Voto Informado</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: #10152f;
+  color: white;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 15% 20%, #39318b 0, transparent 30%),
+    radial-gradient(circle at 85% 80%, #174b80 0, transparent 35%);
+  z-index: -1;
+}
+
+.container {
+  width: 92%;
+  max-width: 750px;
+  margin: auto;
+  padding: 25px 0 45px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.logo {
+  font-size: 17px;
+  font-weight: 900;
+  color: #ffe16b;
+}
+
+.points {
+  background: #292e57;
+  padding: 9px 16px;
+  border-radius: 30px;
+  font-weight: 900;
+  color: #ffe16b;
+}
+
+.screen {
+  display: none;
+  animation: appear .4s ease;
+}
+
+.screen.active {
+  display: block;
+}
+
+@keyframes appear {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero {
+  text-align: center;
+  padding: 35px 20px;
+  background: linear-gradient(145deg,#343c88,#6242a4);
+  border: 1px solid #7773cc;
+  border-radius: 28px;
+  box-shadow: 0 15px 40px #080d25;
+}
+
+.robot {
+  font-size: 90px;
+  display: inline-block;
+  animation: float 2.5s infinite ease-in-out;
+}
+
+@keyframes float {
+  50% { transform: translateY(-12px) rotate(3deg); }
+}
+
+h1 {
+  font-size: clamp(30px,7vw,48px);
+  line-height: 1.1;
+  font-weight: 900;
+  color: #ffe16b;
+  margin: 15px 0;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: #e3e5ff;
+  line-height: 1.6;
+}
+
+.main-btn {
+  border: none;
+  background: linear-gradient(90deg,#ffe16b,#ffae48);
+  color: #242347;
+  padding: 15px 30px;
+  border-radius: 15px;
+  font-size: 17px;
+  font-weight: 900;
+  cursor: pointer;
+  margin-top: 25px;
+  box-shadow: 0 5px 0 #b97824;
+  transition: .2s;
+}
+
+.main-btn:hover {
+  transform: translateY(-3px);
+}
+
+.levels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.level-card {
+  background: #242b52;
+  border: 1px solid #4c568a;
+  padding: 15px;
+  border-radius: 17px;
+  text-align: center;
+}
+
+.level-card span {
+  font-size: 30px;
+}
+
+.level-card h3 {
+  font-size: 14px;
+  margin-top: 7px;
+}
+
+.level-card p {
+  font-size: 11px;
+  color: #bfc8ef;
+  margin-top: 4px;
+}
+
+.section-title {
+  font-size: 23px;
+  font-weight: 900;
+  color: #ffe16b;
+  margin-bottom: 15px;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 8px;
+  color: #cbd4ff;
+}
+
+.progress-bar {
+  height: 10px;
+  background: #292f54;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg,#54e6c1,#ffe16b);
+  transition: width .4s;
+}
+
+.question-card {
+  background: #252d58;
+  border: 1px solid #525e94;
+  border-radius: 22px;
+  padding: 23px;
+}
+
+.level-label {
+  display: inline-block;
+  background: #5143a3;
+  color: #ffe16b;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 900;
+  margin-bottom: 14px;
+}
+
+.question {
+  font-size: 21px;
+  font-weight: 900;
+  line-height: 1.4;
+  margin-bottom: 20px;
+}
+
+.answers {
+  display: grid;
+  gap: 11px;
+}
+
+.answer {
+  background: #343e70;
+  border: 2px solid #505c91;
+  color: white;
+  border-radius: 13px;
+  padding: 14px;
+  text-align: left;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.answer:hover:not(:disabled) {
+  border-color: #ffe16b;
+  background: #424d85;
+}
+
+.answer:disabled {
+  cursor: default;
+}
+
+.answer.correct {
+  background: #17664e;
+  border-color: #54e6a6;
+}
+
+.answer.wrong {
+  background: #843b52;
+  border-color: #ff8395;
+}
+
+.feedback {
+  display: none;
+  padding: 15px;
+  margin-top: 18px;
+  border-radius: 13px;
+  background: #17213e;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.feedback.show {
+  display: block;
+  animation: appear .3s;
+}
+
+.next-btn {
+  width: 100%;
+  background: #ffe16b;
+  color: #222747;
+  border: none;
+  border-radius: 13px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 900;
+  margin-top: 17px;
+  cursor: pointer;
+  display: none;
+}
+
+.next-btn.show {
+  display: block;
+}
+
+.result {
+  text-align: center;
+  padding: 30px 20px;
+  background: linear-gradient(145deg,#303b7a,#593e91);
+  border-radius: 25px;
+}
+
+.result-icon {
+  font-size: 85px;
+}
+
+.result h2 {
+  font-size: 31px;
+  color: #ffe16b;
+  margin: 15px 0;
+}
+
+.final-score {
+  font-size: 52px;
+  font-weight: 900;
+  color: #ffe16b;
+  margin: 15px;
+}
+
+.message {
+  line-height: 1.7;
+  color: #e4e6ff;
+}
+
+footer {
+  text-align: center;
+  color: #9ba8d0;
+  font-size: 12px;
+  margin-top: 28px;
+}
+
+@media(max-width:450px) {
+  .levels { gap: 8px; }
+  .level-card { padding: 12px 7px; }
+  .question-card { padding: 17px; }
+  .question { font-size: 19px; }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+  <div class="logo">🚀 MISIÓN CIUDADANA</div>
+  <div class="points">⭐ <span id="points">0</span> pts</div>
+</header>
+
+<!-- INICIO -->
+<section class="screen active" id="home">
+  <div class="hero">
+    <div class="robot">🤖</div>
+    <h1>MISIÓN:<br>VOTO INFORMADO</h1>
+    <p class="subtitle">
+      ¿Estás preparado para tomar decisiones responsables?
+      Supera los desafíos, demuestra tus conocimientos
+      y conviértete en un ciudadano informado.
+    </p>
+    <button class="main-btn" onclick="startGame()">
+      🚀 COMENZAR MISIÓN
+    </button>
+  </div>
+
+  <h2 class="section-title" style="margin-top:25px">
+    🏆 Tus desafíos
+  </h2>
+
+  <div class="levels">
+    <div class="level-card">
+      <span>🧠</span>
+      <h3>NIVEL 1</h3>
+      <p>Pon a prueba tus conocimientos</p>
+    </div>
+    <div class="level-card">
+      <span>🔎</span>
+      <h3>NIVEL 2</h3>
+      <p>Detecta la desinformación</p>
+    </div>
+    <div class="level-card">
+      <span>⚖️</span>
+      <h3>NIVEL 3</h3>
+      <p>Compara las propuestas</p>
+    </div>
+    <div class="level-card">
+      <span>🗳️</span>
+      <h3>NIVEL 4</h3>
+      <p>Elige responsablemente</p>
+    </div>
+  </div>
+</section>
+
+<!-- JUEGO -->
+<section class="screen" id="game">
+  <div class="progress-info">
+    <span id="levelName">Nivel 1</span>
+    <span id="questionNumber">Pregunta 1/3</span>
+  </div>
+
+  <div class="progress-bar">
+    <div class="progress-fill" id="progress"></div>
+  </div>
+
+  <div class="question-card">
+    <span class="level-label" id="levelLabel">
+      NIVEL 1
+    </span>
+
+    <div class="question" id="question">
+      Pregunta
+    </div>
+
+    <div class="answers" id="answers"></div>
+
+    <div class="feedback" id="feedback"></div>
+
+    <button class="next-btn" id="next" onclick="nextQuestion()">
+      SIGUIENTE DESAFÍO ➜
+    </button>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section class="screen" id="finish">
+  <div class="result">
+    <div class="result-icon" id="finalIcon">🏆</div>
+    <h2>¡MISIÓN COMPLETADA!</h2>
+    <p class="subtitle">Has superado los cuatro niveles.</p>
+
+    <div class="final-score">
+      <span id="finalPoints">0</span>
+    </div>
+    <p>puntos conseguidos</p>
+
+    <p class="message" id="finalMessage" style="margin-top:20px">
+      ¡Felicitaciones!
+    </p>
+
+    <button class="main-btn" onclick="restartGame()">
+      🔄 VOLVER A JUGAR
+    </button>
+  </div>
+</section>
+
+<footer>
+  Campaña informativa: Promoviendo el voto reflexivo e informado.
+  <br>
+  Institución Educativa Francisco Irazola.
+</footer>
+
+</div>
+
+<script>
+
+const levels = [
+
+{
+name:"Pon a prueba tus conocimientos",
+emoji:"🧠",
+questions:[
+{
+q:"¿Qué significa emitir un voto informado?",
+a:[
+"Votar por el candidato más popular.",
+"Investigar y analizar antes de decidir.",
+"Votar siguiendo lo que dicen los amigos."
+],
+correct:1,
+why:"El voto informado implica investigar, comparar propuestas y reflexionar antes de tomar una decisión."
+},
+{
+q:"¿Qué debemos analizar antes de elegir a un candidato?",
+a:[
+"Sus propuestas y trayectoria.",
+"Su apariencia física.",
+"Su cantidad de seguidores."
+],
+correct:0,
+why:"Es importante conocer sus propuestas, experiencia, antecedentes y posibilidades de cumplir sus compromisos."
+},
+{
+q:"¿Cuál es una característica de un voto responsable?",
+a:[
+"Dejar que otros decidan por nosotros.",
+"Elegir por presión social.",
+"Tomar una decisión libre y consciente."
+],
+correct:2,
+why:"Un voto responsable nace de nuestra propia reflexión y de información confiable."
+}
+]
+},
+
+{
+name:"Detecta la desinformación",
+emoji:"🔎",
+questions:[
+{
+q:"Recibes una noticia sorprendente sobre un candidato. ¿Qué haces?",
+a:[
+"La comparto inmediatamente.",
+"Verifico la información en fuentes confiables.",
+"La creo porque tiene muchas reacciones."
+],
+correct:1,
+why:"Antes de compartir una noticia debemos comprobar su origen, fecha y veracidad."
+},
+{
+q:"Una publicación no tiene autor ni fuentes. ¿Qué debes hacer?",
+a:[
+"Desconfiar y buscar otras fuentes.",
+"Creerla sin investigar.",
+"Compartirla para preguntar si es cierta."
+],
+correct:0,
+why:"La información sin fuentes verificables debe analizarse con precaución."
+},
+{
+q:"¿Qué es la desinformación?",
+a:[
+"Información comprobada.",
+"Información presentada de forma engañosa o falsa.",
+"Una opinión personal claramente identificada."
+],
+correct:1,
+why:"La desinformación difunde contenidos falsos o engañosos que pueden confundir a las personas."
+}
+]
+},
+
+{
+name:"Compara las propuestas",
+emoji:"⚖️",
+questions:[
+{
+q:"Candidato A propone mejorar las escuelas. Candidato B propone mejorar los centros de salud. ¿Qué debes hacer?",
+a:[
+"Elegir sin leer las propuestas.",
+"Comparar ambas propuestas y evaluar su viabilidad.",
+"Elegir al que tenga más publicidad."
+],
+correct:1,
+why:"Comparar las propuestas, sus beneficios y su viabilidad permite tomar decisiones más conscientes."
+},
+{
+q:"Una propuesta promete resolver todos los problemas inmediatamente. ¿Qué conviene analizar?",
+a:[
+"Si tiene un plan realista para cumplirla.",
+"Si suena emocionante.",
+"Si muchas personas la comparten."
+],
+correct:0,
+why:"Debemos examinar si las promesas tienen objetivos claros, recursos y un plan posible."
+},
+{
+q:"¿Por qué es importante conocer la trayectoria de un candidato?",
+a:[
+"Para juzgar su vida privada.",
+"Para conocer sus antecedentes y experiencia pública.",
+"Para saber cuántos amigos tiene."
+],
+correct:1,
+why:"Conocer su trayectoria ayuda a evaluar su experiencia y su comportamiento en la vida pública."
+}
+]
+},
+
+{
+name:"Elige responsablemente",
+emoji:"🗳️",
+questions:[
+{
+q:"Un amigo te exige votar por su candidato favorito. ¿Qué haces?",
+a:[
+"Lo sigo para evitar discusiones.",
+"Decido libremente después de informarme.",
+"Dejo que él elija por mí."
+],
+correct:1,
+why:"El voto debe ser libre. Nadie debe presionarnos para decidir por una opción determinada."
+},
+{
+q:"¿Qué actitud fortalece la democracia?",
+a:[
+"Respetar las diferentes opiniones y participar.",
+"Impedir que otros expresen sus ideas.",
+"Ignorar los asuntos de nuestra comunidad."
+],
+correct:0,
+why:"La democracia se fortalece con participación, respeto, diálogo y libertad de expresión."
+},
+{
+q:"¿Cómo puedes promover el voto informado en tu institución?",
+a:[
+"Compartiendo rumores.",
+"Obligando a otros a pensar igual.",
+"Promoviendo información confiable y espacios de reflexión."
+],
+correct:2,
+why:"Informar, dialogar y respetar distintas opiniones ayuda a construir una participación responsable."
+}
+]
+}
+
+];
+
+let currentLevel = 0;
+let currentQuestion = 0;
+let points = 0;
+let answered = false;
+
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s=>{
+    s.classList.remove("active");
+  });
+  document.getElementById(id).classList.add("active");
+}
+
+function startGame() {
+  currentLevel = 0;
+  currentQuestion = 0;
+  points = 0;
+  updatePoints();
+  showScreen("game");
+  renderQuestion();
+}
+
+function updatePoints() {
+  document.getElementById("points").textContent = points;
+}
+
+function renderQuestion() {
+  answered = false;
+
+  const level = levels[currentLevel];
+  const data = level.questions[currentQuestion];
+
+  document.getElementById("levelName").textContent =
+    level.emoji + " " + level.name;
+
+  document.getElementById("levelLabel").textContent =
+    "NIVEL " + (currentLevel+1);
+
+  document.getElementById("questionNumber").textContent =
+    "Pregunta " + (currentQuestion+1) + "/3";
+
+  document.getElementById("progress").style.width =
+    ((currentLevel*3+currentQuestion+1)/12*100)+"%";
+
+  document.getElementById("question").textContent = data.q;
+
+  const answers = document.getElementById("answers");
+  answers.innerHTML = "";
+
+  data.a.forEach((answer,index)=>{
+    const btn = document.createElement("button");
+    btn.className = "answer";
+    btn.textContent = ["A","B","C"][index] + ". " + answer;
+    btn.onclick = ()=>selectAnswer(index,btn);
+    answers.appendChild(btn);
+  });
+
+  document.getElementById("feedback").className = "feedback";
+  document.getElementById("next").className = "next-btn";
+}
+
+function selectAnswer(index,btn) {
+  if(answered) return;
+  answered = true;
+
+  const data = levels[currentLevel].questions[currentQuestion];
+  const buttons = document.querySelectorAll(".answer");
+  buttons.forEach(b=>b.disabled=true);
+
+  const feedback = document.getElementById("feedback");
+
+  if(index === data.correct) {
+    points += 10;
+    btn.classList.add("correct");
+    feedback.innerHTML =
+      "🌟 <strong>¡Excelente! Respuesta correcta.</strong><br>" + data.why;
+  } else {
+    btn.classList.add("wrong");
+    buttons[data.correct].classList.add("correct");
+    feedback.innerHTML =
+      "💡 <strong>¡Sigue aprendiendo!</strong><br>" + data.why;
+  }
+
+  updatePoints();
+  feedback.classList.add("show");
+
+  const next = document.getElementById("next");
+  next.textContent =
+    currentQuestion === 2 && currentLevel === 3
+    ? "🏆 VER RESULTADOS"
+    : "SIGUIENTE DESAFÍO ➜";
+
+  next.classList.add("show");
+}
+
+function nextQuestion() {
+  if(currentQuestion < 2) {
+    currentQuestion++;
+  } else if(currentLevel < 3) {
+    currentLevel++;
+    currentQuestion = 0;
+  } else {
+    finishGame();
+    return;
+  }
+
+  renderQuestion();
+}
+
+function finishGame() {
+  showScreen("finish");
+
+  document.getElementById("finalPoints").textContent = points;
+
+  let message = "";
+  let icon = "";
+
+  if(points === 120) {
+    icon = "🏆";
+    message = "¡Puntuación perfecta! Dominas los principios del voto informado. ¡Eres un gran ejemplo de participación responsable!";
+  } else if(points >= 80) {
+    icon = "🥇";
+    message = "¡Excelente trabajo! Tienes buenos conocimientos sobre cómo participar de manera informada y responsable.";
+  } else if(points >= 50) {
+    icon = "🌟";
+    message = "¡Buen esfuerzo! Has aprendido conceptos importantes. Sigue investigando y reflexionando.";
+  } else {
+    icon = "📚";
+    message = "¡Lo importante es aprender! Vuelve a intentarlo y descubre más sobre la democracia y el voto informado.";
+  }
+
+  document.getElementById("finalIcon").textContent = icon;
+  document.getElementById("finalMessage").textContent = message;
+}
+
+function restartGame() {
+  startGame();
+}
+
+</script>
+</body>
+</html>
